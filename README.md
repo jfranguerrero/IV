@@ -34,28 +34,3 @@ Finalmente solo necesitamos realizar un pull request en el repositorio de la asi
 
 
 
-## Primer hito: Estructuración y tema del proyecto.
-
-### Prerrequisitos
-
-- [x]   Tener aprobado el hito 0
-- [x]   Tener alcanzado el 80% de los objetivos del tema
-
-### Descripción del proyecto
-
-El proyecto es un bot de Telegram que tiene como finalidad la búsqueda de precios de
-vuelos aprovechando la API de Skyscanner. El usuario introducirá aeropuerto de origen, destino, fecha de ida y fecha de vuelta y el bot le devolverá el precio más bajo para los datos indicados. Parte de esta información podrá ser guardada en una base de datos para determinar destinos más deseados y fechas donde los viajeros compran más vuelos.
-
-Adicionalmente puede que el bot pueda llegar a ofrecer en un futuro precios sin fechas exactas ofreciendo el día que es más barato ir a un destino o buscar los destinos más baratos de un determinado país.
-
-- Para la realización del proyecto necesitaremos tener instalado Python que es el lenguaje que se usará.
-
-- Una base de datos para almacenar información que pueda ser de interés.
-
-- Una API de bots de Telegram basada en Python para hacer el desarrollo de una forma sencilla.
-
-- API en Python de Skyscanner para realizar peticiones y obtener los precios de los vuelos.
-
-- Servicio en la nube para montar nuestro bot.
-
-- Servicios de monitorización y logs de errores para estudiar la carga y los errores que puedan aparecer en el sistema.
