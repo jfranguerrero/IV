@@ -13,8 +13,6 @@ def load_obj(name ):
         return pickle.load(f)
 
 
-TOKEN =os.environ['token_vuelabot']
-
 
 
 class vuelaBotTest(unittest.TestCase):

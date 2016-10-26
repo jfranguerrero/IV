@@ -2,12 +2,14 @@
 from skyscanner.skyscanner import Flights
 import datetime
 import sys
+import os
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 
 def buscarvuelo_live( origen, destino, fecha_ida, fecha_vuelta):
-    flights_service = Flights('st701826977373404435621936935426')
+    flights_service = Flights(os.environ['api_skyscanner'])
     result = flights_service.get_result(
             errors='graceful',
             country='ES',
