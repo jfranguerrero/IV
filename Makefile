@@ -5,4 +5,4 @@ test:
 	cd vuelaBot && python test_vuelabot.py
 
 execute:
-cd vuelaBot && python vuelabot.py
+	cd vuelaBot && python vuelabot.py
