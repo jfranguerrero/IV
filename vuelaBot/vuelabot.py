@@ -6,12 +6,21 @@ import time
 from skyscanner.skyscanner import Flights
 from requests.exceptions import HTTPError
 import os
-import sqlite3
 import modules
+import psycopg2
+import pickle
+
 
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+def load_obj(name ):
+    with open('obj/' + name + '.pkl', 'rb') as f:
+        return pickle.load(f)
+
+def save_obj(obj, name ):
+    with open('obj/'+ name + '.pkl', 'wb') as f:
+        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
 
 TOKEN =os.environ['token_vuelabot']
@@ -41,8 +50,9 @@ def command_buscarvuelo(m):
             result = modules.buscarvuelo_live(dic_datos['origen'], dic_datos['destino'], fechas['fida'], fechas['fvuelta'])
 
             bot.send_message(cid, "Buscando vuelos a " +dic_datos['destino'] +" con origen "+dic_datos['origen'])
+
             resultado=modules.procesar_resultados(result)
-            bot.send_message(cid, resultado)
+            bot.send_message(cid, resultado, parse_mode="Markdown")
 
 
         except HTTPError as e:
@@ -54,17 +64,21 @@ def command_buscarvuelo(m):
 
 @bot.message_handler(commands=['aeropuertos'])
 def command_aeropuertos(m):
+
+
     cid = m.chat.id
-    con_bd = sqlite3.connect('vuelabot.db')
-    c = con_bd.cursor()
+    conn = psycopg2.connect("dbname='vuelabotdb' user='francisco' host='localhost' password='1234'")
+    c = conn.cursor()
 
     salida=''
-    for row in c.execute('SELECT * FROM aeropuertos'):
+    c.execute("""SELECT * from aeropuertos""")
+    rows =c.fetchall()
+    for row in rows:
         salida+="País: "+row[2]+', Ciudad: '+row[1]+", Código aeropuerto: "+row[0]+'\n'
 
     bot.send_message(cid,salida)
-#    con_bd.commit()
-    con_bd.close()
+    c.close()
+    conn.close()
 
 
 bot.polling(none_stop=True)

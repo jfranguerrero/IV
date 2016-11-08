@@ -6,12 +6,19 @@ import os
 import time
 import pickle
 import sqlite3
+import psycopg2
+
 
 
 def load_obj(name ):
     with open('obj/' + name + '.pkl', 'rb') as f:
         return pickle.load(f)
 
+def save_obj(obj, name ):
+    with open('obj/'+ name + '.pkl', 'wb') as f:
+        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+
+TOKEN =os.environ['token_vuelabot']
 
 
 
@@ -43,12 +50,16 @@ class vuelaBotTest(unittest.TestCase):
 
 
     def test_basedatos(self):
-        con_bd = sqlite3.connect('vuelabot.db')
+
+        con_bd = psycopg2.connect("dbname='vuelabotdb' user='francisco' host='localhost' password='1234'")
         c = con_bd.cursor()
         ciudad=('BCN', )
-        c.execute('SELECT cod_aeropuerto FROM aeropuertos WHERE cod_aeropuerto=?', ciudad)
+
+        c.execute('SELECT cod_aeropuerto FROM aeropuertos WHERE cod_aeropuerto=%s', ciudad)
+
         self.assertEquals(c.fetchone()[0],'BCN')
         con_bd.close()
+
 
 if __name__ == '__main__':
     unittest.main()

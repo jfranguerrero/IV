@@ -2,8 +2,7 @@
 from skyscanner.skyscanner import Flights
 import datetime
 import sys
-import os
-
+import psycopg2
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -43,7 +42,8 @@ def convertir_fechas(ida, vuelta):
 
 def procesar_resultados( result):
     try:
-        resultado='Precio: '+str(result['Itineraries'][0]['PricingOptions'][0]['Price'])+' €\n\n'
+
+        resultado='Precio: *'+str(result['Itineraries'][0]['PricingOptions'][0]['Price'])+' €*\n\n'
         cod_ida=result['Itineraries'][0]['OutboundLegId']
         cod_vuelta=result['Itineraries'][0]['InboundLegId']
 
@@ -55,7 +55,7 @@ def procesar_resultados( result):
                 for item2 in result['Carriers']:
                     if(item2['Id']==cod_aero):
                         nombre_aero=item2['Name']
-                        resultado+='Aerolinea: '+nombre_aero+'\n\n'
+                        resultado+='Aerolinea: *'+nombre_aero+'*\n\n'
 
         for item in result['Legs']:
             if (item['Id']==cod_vuelta):
@@ -65,8 +65,12 @@ def procesar_resultados( result):
                 for item2 in result['Carriers']:
                     if(item2['Id']==cod_aero):
                         nombre_aero=item2['Name']
-                        resultado+='Aerolinea: '+nombre_aero+'\n\n'
+                        resultado+='Aerolinea: *'+nombre_aero+'*\n\n'
+
+        link=result['Itineraries'][0]['PricingOptions'][0]['DeeplinkUrl']
+
+        resultado+='[Reservar Aquí]('+link+')'
 
         return resultado
-    except IndexError:
+    except (NameError, TypeError, IndexError):
         return "No se han encontrado resultados."
