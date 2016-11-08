@@ -9,6 +9,7 @@ import os
 import modules
 import psycopg2
 import pickle
+import urlparse
 
 
 reload(sys)
@@ -67,7 +68,13 @@ def command_aeropuertos(m):
 
 
     cid = m.chat.id
-    conn = psycopg2.connect("dbname='vuelabotdb' user='francisco' host='localhost' password='1234'")
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     c = conn.cursor()
 
     salida=''
