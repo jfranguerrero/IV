@@ -15,13 +15,10 @@ import urlparse
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-def load_obj(name ):
-    with open('obj/' + name + '.pkl', 'rb') as f:
-        return pickle.load(f)
 
-def save_obj(obj, name ):
-    with open('obj/'+ name + '.pkl', 'wb') as f:
-        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+urlparse.uses_netloc.append("postgres")
+url = urlparse.urlparse(os.environ["DATABASE_URL"])
+
 
 
 TOKEN =os.environ['token_vuelabot']
@@ -68,13 +65,7 @@ def command_aeropuertos(m):
 
 
     cid = m.chat.id
-    conn = psycopg2.connect(
-        database=url.path[1:],
-        user=url.username,
-        password=url.password,
-        host=url.hostname,
-        port=url.port
-    )
+    conn = psycopg2.connect(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
     c = conn.cursor()
 
     salida=''
