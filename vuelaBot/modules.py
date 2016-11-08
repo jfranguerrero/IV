@@ -3,6 +3,7 @@ from skyscanner.skyscanner import Flights
 import datetime
 import sys
 import psycopg2
+import os
 reload(sys)
 sys.setdefaultencoding('utf8')
 
