@@ -1,7 +1,7 @@
 
 branches:
   except:
-    - Documentacion
+  - Documentacion
 
 language: python
 python:
