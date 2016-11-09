@@ -59,7 +59,7 @@ class vuelaBotTest(unittest.TestCase):
 
         c.execute('SELECT cod_aeropuerto FROM aeropuertos WHERE cod_aeropuerto=%s', ciudad)
 
-        self.assertEquals(c.fetchone()[0],'BCNA')
+        self.assertEquals(c.fetchone()[0],'BCN')
         con_bd.close()
 
 
