@@ -35,6 +35,15 @@ def listener(messages):
 
 bot.set_update_listener(listener)
 
+@bot.message_handler(commands=['start', 'help', 'ayuda'])
+def command_ayuda(m):
+    cid = m.chat.id
+
+    salida="Funcinamiento de vuelaBot\n\n\nPara buscar un vuelo:\n/buscarvuelo Cod_Aeropuerto_Origen Cod_Aeropuerto_Destino Fecha_ida Fecha_vuelta\n\nMostrar códigos aeropuertos Españoles:\n /aeropuertos"
+    bot.send_message(cid,salida)
+
+
+
 @bot.message_handler(commands=['buscarvuelo'])
 def command_buscarvuelo(m):
     cid = m.chat.id
