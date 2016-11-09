@@ -46,7 +46,7 @@ def command_ayuda(m):
 @bot.message_handler(commands=['contacto'])
 def command_contacto(m):
     cid = m.chat.id
-    salida="Para cualquier duda, problema o sujerencia.\nEmail: jfranguerrero@gmail.com\nTelegram: @Jfguerrero"
+    salida="Para cualquier duda, problema o sugerencia.\nEmail: jfranguerrero@gmail.com\nTelegram: @Jfguerrero"
     bot.send_message(cid,salida)
 
 
