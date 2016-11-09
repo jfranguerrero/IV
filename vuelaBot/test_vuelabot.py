@@ -21,7 +21,6 @@ def save_obj(obj, name ):
     with open('obj/'+ name + '.pkl', 'wb') as f:
         pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
-TOKEN =os.environ['token_vuelabot']
 
 
 
