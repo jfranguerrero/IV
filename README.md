@@ -76,3 +76,38 @@ Si todo está correcto nos aparecerá una imagen similar a la siguiente con la i
 ![alt text](http://i64.tinypic.com/deppux.png)
 
 
+## Hito 3: Despliegue en un PaaS
+
+El Paas elegido para el despliegue es Heroku debido a su sencillez. La idea del despliegue
+es que cuando se actualice nuestro repositorio (mediante un git push) automáticamente
+se ejecuten los tests realizados por Travis-CI y si éstos son correctos, se despliegue
+en Heroku.
+
+Crearemos una app mediante ```heroku create``` y una base de datos que donde almacenar datos con ```heroku addons:create heroku-postgresql:hobby-dev ```
+
+El problema que se nos presenta es que anteriormente trabajábamos con sqlite y ahora estamos usando Postgresql.
+
+Para ello lo que se ha realizado es modificar la anterior base de datos sqlite3 a Postgresql y
+para que funcione correctamente con la base de datos con Heroku, se ha introducido lo siguiente en la forma de conexión:
+
+```
+urlparse.uses_netloc.append("postgres")
+url = urlparse.urlparse(os.environ["DATABASE_URL"])
+
+con_bd =psycopg2.connect(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
+    c = con_bd.cursor()
+
+```
+
+Posteriormente se ha realizado un fichero Procfile que indica a Heroku que fichero debe ejecutar para lanzar la aplicación. El Procfile tiene la siguiente estructura:
+
+```
+worker: python vuelaBot/vuelabot.py
+```
+
+Finalmente debemos sincronizar el despligue de Heroku con Travis-CI y GitHub. Lo podemos llevar a cabo desde la configuración de nuestra aplicación en Heroku, en la sección de "Deploy". Conectamos con nuestro repositorio de GitHub y marcamos "Wait for CI to pass before deploy " para esperar a la realización de tets de Travis-CI para el despligue. En la siguiente imagen se puede apreciar la configuración:
+
+
+![alt text](http://i67.tinypic.com/2uygdw0.png)
+
+Se puede ver funcionando desde: https://telegram.me/vuelaBot
