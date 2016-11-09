@@ -47,6 +47,8 @@ def command_ayuda(m):
 def command_contacto(m):
     cid = m.chat.id
     salida="Para cualquier duda, problema o sujerencia.\nEmail: jfranguerrero@gmail.com\nTelegram: @Jfguerrero"
+    bot.send_message(cid,salida)
+
 
 @bot.message_handler(commands=['buscarvuelo'])
 def command_buscarvuelo(m):
