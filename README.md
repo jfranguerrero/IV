@@ -20,6 +20,10 @@ Para tener una mayor explotación comercial en la fase final del proyecto se int
 
 ## Funcionamiento
 
+Para agregar el bot en funcionamiento se puede usar el siguiente enlace:
+
+https://telegram.me/vuelaBot
+
 Actualmente el bot dispone de dos funciones.
 
 - ```/aeropuertos```: Muestra el código de aeropuerto y ciudad de los aeropuertos españoles. proximamente se mostrarán aeropuertos de toda Europa indicándole el país deseado.
@@ -102,3 +106,5 @@ Finalmente debemos sincronizar el despligue de Heroku con Travis-CI y GitHub. Lo
 
 
 ![alt text](http://i67.tinypic.com/2uygdw0.png)
+
+Se puede ver funcionando desde: https://telegram.me/vuelaBot
