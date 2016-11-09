@@ -7,7 +7,10 @@ import time
 import pickle
 import sqlite3
 import psycopg2
+import urlparse
 
+urlparse.uses_netloc.append("postgres")
+url = urlparse.urlparse(os.environ["DATABASE_URL"])
 
 
 def load_obj(name ):
@@ -51,7 +54,7 @@ class vuelaBotTest(unittest.TestCase):
 
     def test_basedatos(self):
 
-        con_bd = psycopg2.connect("dbname='vuelabotdb' user='francisco' host='localhost' password='1234'")
+        con_bd =psycopg2.connect(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
         c = con_bd.cursor()
         ciudad=('BCN', )
 
