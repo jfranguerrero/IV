@@ -1,1 +1,1 @@
-web: python vuelaBot/vuelabot.py
+worker: python vuelaBot/vuelabot.py
