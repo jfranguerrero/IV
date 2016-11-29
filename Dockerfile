@@ -14,7 +14,7 @@ RUN sudo apt-get -y install python-dev
 RUN sudo apt-get -y install build-essential
 RUN sudo apt-get -y install python-psycopg2
 RUN sudo apt-get -y install libpq-dev
-RUN sudo easy_install3 pip
+RUN sudo easy_install pip
 RUN sudo pip install --upgrade pip
 
 ENV token_vuelabot="250787379:AAFbu2eez-nF0_a-hLPWbqM3Vqd_uWR9eqE"
