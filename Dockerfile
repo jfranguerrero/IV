@@ -1,5 +1,14 @@
 FROM ubuntu:14.04
 MAINTAINER Jose Francisco Guerrero Collantes <jfranguerrero@gmail.com>
+
+ARG token_vuelabot
+ARG DATABASE_URL
+ARG api_skyscanner
+
+ENV token_vuelabot=$token_vuelabot
+ENV DATABASE_URL=$DATABASE_URL
+ENV api_skyscanner=$api_skyscanner
+
 #instalamos git
 RUN apt-get -y update
 RUN apt-get install -y git
@@ -17,8 +26,6 @@ RUN sudo apt-get -y install libpq-dev
 RUN sudo easy_install pip
 RUN sudo pip install --upgrade pip
 
-ENV token_vuelabot="250787379:AAFbu2eez-nF0_a-hLPWbqM3Vqd_uWR9eqE"
-ENV DATABASE_URL="postgres://nplqfozzkewmas:2Qjia0d5phK20qOE53hcYWGJtA@ec2-23-21-238-76.compute-1.amazonaws.com:5432/ddf30htb3vtksc"
-ENV api_skyscanner="st701826977373404435621936935426"
+
 
 RUN cd IV/ && make install
