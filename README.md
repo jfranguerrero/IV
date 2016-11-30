@@ -111,3 +111,31 @@ Finalmente debemos sincronizar el despligue de Heroku con Travis-CI y GitHub. Lo
 ![alt text](http://i67.tinypic.com/2uygdw0.png)
 
 Se puede ver funcionando desde: https://telegram.me/vuelaBot
+
+## Hito 4: Entorno de pruebas
+
+El entorno de pruebas se va a llevar a cabo en contenedores docker.
+
+Lo primero que debemos realizar es crear un fichero Dockerfile. En este fichero le indicaremos la versión de Ubuntu a usar y los comandos para instalar git, descargar el repositorio del proyecto, instalar python y pip y ejecutar el makefile de instalación del proyecto.
+
+![alt text](http://i64.tinypic.com/2uqlpqo.png)
+
+El siguiente paso es registrarnos en DockerHub. Tras registrarnos enlazamos nuestra cuenta con GitHub. Esto lo llevamos a cabo desde opciones en Linked Accounts.
+
+![alt text](http://i64.tinypic.com/flwyux.png)
+
+Ahora debemos asociar nuestro repositorio para que se cree la imagen de forma automática. Para ello vamos a create y create automated build. Aquí nos permitirá elegir el repositorio para crear su imagen.
+
+![alt text](http://i63.tinypic.com/95ot5c.png)
+
+En el momento en el cual se realice un commit en el repositorio automáticamente se creará una nueva imagen del contenedor para descargar.
+
+![alt text](http://i63.tinypic.com/dxg65u.png)
+
+Se creará una imagen la cual descargaremos mediante ```docker pull jfranguerrero/iv```.
+
+Cuando esté descargada la ejecutamos con ```sudo docker run -e "token_vuelabot=XXX" -e "DATABASE_URL=XXX" -e "api_skyscanner=XXX" -i -t jfranguerrero/iv```
+
+Debemos tener en cuenta el introducir los tokens para poder conectar a las APIs y a la base de datos.
+
+[![Docker](https://camo.githubusercontent.com/8a4737bc02fcfeb36a2d7cfb9d3e886e9baf37ad/687474703a2f2f693632382e70686f746f6275636b65742e636f6d2f616c62756d732f7575362f726f6d696c67696c646f2f646f636b657269636f6e5f7a7073776a3369667772772e706e67)](https://hub.docker.com/r/jfranguerrero/iv/)
