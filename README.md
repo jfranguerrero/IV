@@ -2,6 +2,11 @@
 
 [![Build Status](https://travis-ci.org/jfranguerrero/IV.svg?branch=master)](https://travis-ci.org/jfranguerrero/IV)
 
+[![Heroku Deploy](https://www.herokucdn.com/deploy/button.svg)](https://intense-tor-85639.herokuapp.com/  )
+
+
+[![Docker](https://camo.githubusercontent.com/8a4737bc02fcfeb36a2d7cfb9d3e886e9baf37ad/687474703a2f2f693632382e70686f746f6275636b65742e636f6d2f616c62756d732f7575362f726f6d696c67696c646f2f646f636b657269636f6e5f7a7073776a3369667772772e706e67)](https://hub.docker.com/r/jfranguerrero/iv/)
+
 ## Descripción del proyecto
 
 El proyecto es un bot de Telegram que tiene como finalidad la búsqueda de precios de vuelos aprovechando la API de Skyscanner. El usuario introducirá aeropuerto de origen, destino, fecha de ida y fecha de vuelta y el bot le devolverá el precio más bajo para los datos indicados. Parte de esta información podrá ser guardada en una base de datos para determinar destinos más deseados y fechas donde los viajeros compran más vuelos.
@@ -108,3 +113,14 @@ Finalmente debemos sincronizar el despligue de Heroku con Travis-CI y GitHub. Lo
 ![alt text](http://i67.tinypic.com/2uygdw0.png)
 
 Se puede ver funcionando desde: https://telegram.me/vuelaBot
+
+## Entorno de pruebas (Docker)
+
+Para el entorno de pruebas se puede usar un contenedor docker todo tendremos todo lo necesario para hacer funcionar el proyecto. Para hacerlo funcionar necesitaremos:
+```
+docker pull jfranguerrero/iv
+
+sudo docker run -e "token_vuelabot=XXX" -e "DATABASE_URL=XXX" -e "api_skyscanner=XXX" -i -t jfranguerrero/iv
+```
+
+Editando las variables de los tokens de las API con los valores que el usuario haya obtenido.
