@@ -20,7 +20,7 @@ def load_obj(name ):
 
 class vuelaBotTest(unittest.TestCase):
     def test_busqueda_vuelo(self):
-        self.result=modules.buscarvuelo_live('AGP', 'BCN', '2017-3-11', '2017-3-15')
+        self.result=modules.buscarvuelo_live('AGP', 'BCN', '2017-03-11', '2017-03-15')
         self.assertTrue(self.result is not None)
         self.assertTrue('Itineraries' in self.result)
         self.assertTrue(len(self.result['Itineraries']) > 0)
