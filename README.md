@@ -139,3 +139,108 @@ Cuando esté descargada la ejecutamos con ```sudo docker run -e "token_vuelabot=
 Debemos tener en cuenta el introducir los tokens para poder conectar a las APIs y a la base de datos.
 
 [![Docker](https://camo.githubusercontent.com/8a4737bc02fcfeb36a2d7cfb9d3e886e9baf37ad/687474703a2f2f693632382e70686f746f6275636b65742e636f6d2f616c62756d732f7575362f726f6d696c67696c646f2f646f636b657269636f6e5f7a7073776a3369667772772e706e67)](https://hub.docker.com/r/jfranguerrero/iv/)
+
+## Hito 5: Despliegue en un IAAS
+
+Para el despliegue de nuestra aplicación en Microsoft Azure necesitamos Vagrant y Ansible.
+Vagrant lo instalamos mediante ```sudo apt-get install vagrant```.
+
+Para instalar Ansible el comando a introducir es: ```sudo apt-get install ansible```.
+
+Como vamos a usar Azure vamos a instalar sus respectivos plugins. Lo llevamos a cabo con:
+
+```
+vagrant plugin install vagrant-azure
+```
+
+Es posible que se nos produzca un error en la instalación en Ubuntu 16.04. Para solventarlo se pueden seguir los pasos del siguiente [enlace](http://stackoverflow.com/questions/36811863/cant-install-vagrant-plugins-in-ubuntu-16-04/36991648#36991648).
+
+El siguiente paso es crear una cuenta de Azure si no disponemos de ella. Podemos usar un código promocional si disponemos de él o usar el servicio de pago.
+
+### Certificados
+
+Crearemos los certificados para el servidor y los subiremos a Azure. Su realización se realiza mediante:
+
+```
+openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout azure.pem -out azure.pem
+openssl x509 -inform pem -in azure.pem -outform der -out azure.cer
+chmod 600 azure.pem
+
+```
+Para subirlo vamos a configuración de Azure y dentro de ella la sección de certificados de administración.
+
+![alt text](http://i68.tinypic.com/d4snr.png)
+
+### Vagrant
+
+Generamos un Vagrantfile mediante la orden ```vagrant init```.
+
+Deberemos añadirle la respectiva configuación de Azure. Aquí podemos acceder al [Vagrantfile](https://github.com/jfranguerrero/IV/blob/master/Vagrantfile).
+
+El siguiente paso es crear un fichero de configuración de [ansible](https://github.com/jfranguerrero/IV/blob/master/ansible.yml). En él indicaremos los paquetes a instalar y el repositorio de la aplicación para descargarla.
+
+Creados estos ficheros podremos lanzar el despliegue mediante:
+```
+vagrant up --provider=azure
+```
+Tardará unos minutos en la instalación pero si no se produce ningún error tendremos nuestra máquina totalmente funcional. Podemos comprobarlo desde la página de Azure.
+
+![alt text](http://i63.tinypic.com/x3h3qh.png)
+
+Si queremos acceder por ssh a la máquina simplemente introduciremos ```vagrant ssh```.
+
+### Fabric
+
+Fabric nos permite administrar una máquina externa desde nuestra propia máquina. La instalaremos con:
+```
+sudo apt-get install fabric
+```
+
+Necesitaremos un fichero de instrucciones para fabric donde indicarle que debe realizar en la máquina. Este lo llamaremos [fabfile](https://github.com/jfranguerrero/IV/blob/master/fabfile.py) y le indicaremos las ordenes de instalación, eliminación, tests, ejecución y detención de la aplicación.
+
+Las ordenes de fabric que se han desarrollado son las siguientes:
+
+- start: Ejecuta la aplicación.
+- stop: Detiene la aplicación.
+- download: Descarga la aplicación.
+- delete: Elimina la aplicación.
+- tests: Ejecuta los tests.
+
+Un problema que se presenta es que cuando salimos de fabric nuestra aplicación deja de funcionar. Este problema se ha resuelto gracias a nohup el cual nos permite ejecutarla en segundo plano.
+
+Para ejecutar una orden en nuestra máquina mediante fabric deberemos introducir lo siguiente:
+```
+fab -p "pass_maquina" -H usuario@vuelabot.cloudapp.net orden_de_fabric
+
+```
+
+### Automatización
+
+Se ha realizado un [script](https://github.com/jfranguerrero/IV/blob/master/deploy.sh) cuya finalidad es realizar todos los pasos anteriores del despliegue de forma totalmente automática.
+
+```
+#!/bin/bash
+
+sudo apt-get update
+
+wget https://releases.hashicorp.com/vagrant/1.8.7/
+sudo dpkg -i vagrant_1.8.7_x86_64.deb
+
+sudo vagrant plugin install vagrant-azure
+
+# Instalación Ansible
+sudo apt-get install ansible
+
+
+# Despliegue en Azure
+sudo vagrant up --provider=azure
+
+# Despliegue de la aplicación con Fabric
+sudo pip install fabric
+# Actualiza el supervisor
+fab -p password -H usuario@vuelabot.cloudapp.net nohup
+```
+
+Aquí tenemos un ejemplo del funcionando:
+
+![alt text](http://i68.tinypic.com/9602zq.png)
