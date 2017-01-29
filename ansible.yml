@@ -2,29 +2,37 @@
 - hosts: default
   remote_user: usuario
   sudo: yes
+
   tasks:
   - name: Update
     command: apt-get update
   - name: essential
     command: apt-get install -y build-essential
-  - name: Install git
+  - name: Install git 
     command: apt-get install -y git
   - name: Instalar pip
     apt: name=python-pip state=present
-  - name: Instalar paquetes necesarios
-    apt: name=python-setuptools state=present
-    apt: name=python-dev state=present
-    apt: name=libgdbm-dev state=present
-    apt: name=libncurses5-dev state=present
-    apt: name=postgresql state=present
-    apt: name=postgresql-contrib state=present
+  - name: Instalar libpq-dev
     apt: name=libpq-dev state=present
-  - name: Clone
-    shell: rm -rf vuelaBot && git clone https://github.com/jfranguerrero/IV
-  - name: Actualizar pip
-    command: pip install -y -U pip
+  - name: Descargar repositorio  
+    shell: rm -rf IV && git clone https://github.com/jfranguerrero/IV
+  - name: Instalar python setuptools
+    apt: name=python-setuptools state=present
+  - name: Instalar python-dev
+    apt: name=python-dev state=present
+  - name: Instalar librerias necesarias
+    apt: name=libgdbm-dev state=present
+  - name: Instalar libncurses
+    apt: name=libncurses5-dev state=present
+  - name: Instalar libgdbm-dev
+    apt: name=libgdbm-dev state=present
+  - name: Instalar postgresql
+    apt: name=postgresql state=present
+  - name: Instalar postgresql-contrib
+    apt: name=postgresql-contrib state=present
+  - name: Instalar psycopg2
+    command: pip install -U pip	
+  - name: Instalar python-dev
     command: sudo apt-get install -y python-dev
   - name: Instalar requirements
     command: sudo pip install -r IV/requirements.txt
-  - name: Execution
-    shell: cd IV && python vuelaBot/vuelabot.py
