@@ -16,5 +16,5 @@ sudo vagrant up --provider=azure
 
 # Despliegue de la aplicación con Fabric
 sudo pip install fabric
-# Actualiza el supervisor
+
 fab -p N1_n2n3n4_N5 -H usuario@vuelabot.cloudapp.net nohup

@@ -179,3 +179,9 @@ fab -p "pass_maquina" -H usuario@vuelabot.cloudapp.net orden_de_fabric
 ```
 
 También podremos realizar todo el despliegue de forma automática mediante el script deploy.sh.
+
+## Adicional
+
+Proyecto inscrito en el concurso de software libre de la OSL.
+
+![alt text](http://i65.tinypic.com/sy76rm.png)
