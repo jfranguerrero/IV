@@ -124,3 +124,58 @@ sudo docker run -e "token_vuelabot=XXX" -e "DATABASE_URL=XXX" -e "api_skyscanner
 ```
 
 Editando las variables de los tokens de las API con los valores que el usuario haya obtenido.
+
+## Despliegue en un IAAS
+
+Para el despliegue de nuestra aplicación en Microsoft Azure necesitamos Vagrant y Ansible.
+Vagrant lo instalamos mediante ```sudo apt-get install vagrant```.
+
+Para instalar Ansible el comando a introducir es: ```sudo apt-get install ansible```.
+
+Como vamos a usar Azure vamos a instalar sus respectivos plugins. Lo llevamos a cabo con:
+
+```
+vagrant plugin install vagrant-azure
+```
+
+Crearemos los certificados para el servidor y los subiremos a Azure. Su realización se realiza mediante:
+
+```
+openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout azure.pem -out azure.pem
+openssl x509 -inform pem -in azure.pem -outform der -out azure.cer
+chmod 600 azure.pem
+
+```
+Para subirlo vamos a configuración de Azure y dentro de ella la sección de certificados de administración.
+
+Generamos un Vagrantfile mediante la orden ```vagrant init```.
+
+Deberemos añadirle la respectiva configuación de Azure. Aquí podemos acceder al [Vagrantfile](https://github.com/jfranguerrero/IV/blob/master/Vagrantfile).
+
+El siguiente paso es crear un fichero de configuración de [ansible](https://github.com/jfranguerrero/IV/blob/master/ansible.yml).
+
+Creados estos ficheros podremos lanzar el despliegue mediante:
+
+```
+vagrant up --provider=azure
+```
+
+Podremos conectar por SSH a la máquina con ```vagrant ssh```.
+
+Para ejecutar órdenes en la máquina creamos un fabfile el cual usaremos con Fabric.
+
+Las ordenes de fabric que se han desarrollado son las siguientes:
+
+- start: Ejecuta la aplicación.
+- stop: Detiene la aplicación.
+- download: Descarga la aplicación.
+- delete: Elimina la aplicación.
+- tests: Ejecuta los tests.
+- nohup: Ejecuta la aplicación en background.
+
+La orden a introducir en Fabric es:
+```
+fab -p "pass_maquina" -H usuario@vuelabot.cloudapp.net orden_de_fabric
+```
+
+También podremos realizar todo el despliegue de forma automática mediante el script deploy.sh.
